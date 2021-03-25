@@ -72,8 +72,9 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@fluentui/react": "^8.5.0",
+    "@fluentui/react": "^8.6.0",
     "@fluentui/react-theme-provider": "^0.18.5",
-    "office-ui-fabric-react": "^7.149.4"
+    "office-ui-fabric-react": "^7.149.4",
+    "read-more-react": "^1.0.10"
   }
 }

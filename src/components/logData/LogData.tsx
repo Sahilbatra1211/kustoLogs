@@ -1,10 +1,13 @@
 import * as React from 'react';
-import { Stack, IStackStyles, IStackTokens } from 'office-ui-fabric-react/lib/Stack';
+import { Stack, IStackStyles, IStackTokens, StackItem } from 'office-ui-fabric-react/lib/Stack';
 import { mergeStyles, DefaultPalette } from 'office-ui-fabric-react/lib/Styling';
 import { PrimaryButton } from 'office-ui-fabric-react';
 import { Pivot, PivotItem, PivotLinkSize } from 'office-ui-fabric-react/lib/Pivot';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import '../../assets/scss/App.scss';
+import { Text } from 'office-ui-fabric-react/lib/Text';
+import { useState } from 'react';
+import ReadMoreReact from 'read-more-react';
 
 
 const commonInfoStackTokens: IStackTokens = {
@@ -17,10 +20,25 @@ const commonInfoStackStyles: IStackStyles = {
     },
 };
 
+const navStackStyles: IStackStyles = {
+    root: {
+        marginLeft: '15px',
+        marginTop: '10px',
+        marginRight: '5px',
+        width: '90px',
+        padding: '5px',
+        borderBottom: '5px solid #faf9f8',
+        cursor: 'pointer',
+        hover: {
+            color: 'rgb(0, 120, 212)'
+        }
+    }
+}
+
 const commonInfoStackItemStyles = mergeStyles({
     background: '#faf9f8',
     color: DefaultPalette.black,
-    font:'Noto Sans',
+    font: 'Noto Sans',
     minWidth: 300,
     height: 25,
     paddingTop: 5,
@@ -32,7 +50,7 @@ const commonInfoStackItemStyles = mergeStyles({
 const commonInfoStackItemStylesLabel = mergeStyles({
     background: '#faf9f8',
     color: DefaultPalette.black,
-    font:'Noto Sans',
+    font: 'Noto Sans',
     minWidth: 150,
     height: 25,
     paddingTop: 5,
@@ -45,7 +63,7 @@ const commonInfoStackItemStylesLabel = mergeStyles({
 const infoStackItemStyles = mergeStyles({
     background: '#edebe9',
     color: DefaultPalette.black,
-    font:'Noto Sans',
+    font: 'Noto Sans',
     fontWeight: 500,
     padding: 10,
     width: '100%'
@@ -54,7 +72,7 @@ const infoStackItemStyles = mergeStyles({
 const infoStackItemStylesLabel = mergeStyles({
     background: '#4c545b',
     color: DefaultPalette.white,
-    font:'Noto Sans',
+    font: 'Noto Sans',
     minWidth: 150,
     padding: 10,
     fontWeight: 500
@@ -64,6 +82,8 @@ export default function LogData(props) {
     const { graphLog, restLog, mailboxGuid, tenantId,
         appId, deploymentRing, entityCommand, restAction,
         graphStatusCode, restStatus, entityStatus } = props.logData;
+
+    const [toggle, setToggle] = useState(0);
 
     const basicLogsData = [{ name: "Mailbox GUID", value: mailboxGuid },
     { name: "Tenant Id", value: tenantId },
@@ -115,75 +135,85 @@ export default function LogData(props) {
             </Stack>
         );
     }
-
+    var toggleColorBasic = toggle == 0 ? 'rgb(0, 120, 212)' : '#faf9f8';
+    var toggleColorDetailed = toggle == 1 ? 'rgb(0, 120, 212)' : '#faf9f8';
     return (
         <div>
-            <Stack id="results-data" tokens={{ childrenGap: 20 }}>
-                <Stack horizontal tokens={{ childrenGap: 30 }}>
-                    <Stack tokens={commonInfoStackTokens}>
-                        {basicLogsData.map((data, index) => {
-                            return result(data, index);
-                        })}
-                    </Stack>
-                    <Stack tokens={commonInfoStackTokens}>
-                        {basicLogsStatus.map((data, index) => {
-                            return result(data, index);
-                        })
-                        }
-                    </Stack>
-                </Stack>
+            <Stack horizontal>
+                <Stack onClick={() => { setToggle(0) }} style={{ borderBottom: `5px solid ${toggleColorBasic}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans' } }}>Basic</Text></Stack>
+                <Stack onClick={() => { setToggle(1) }} style={{ borderBottom: `5px solid ${toggleColorDetailed}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans' } }}>Detailed</Text></Stack>
+            </Stack>
 
-                <Stack horizontal tokens={{ childrenGap: 10 }}>
-                    <PrimaryButton text="Report to Calendar API Shield" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
-                    <PrimaryButton text="Create a Workitem" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
-                    <PrimaryButton text="Update a Workitem" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
-                </Stack>
+            <Stack id="results-data" style={{ marginLeft: '40px', marginTop: '20px', marginRight: '40px' }} tokens={{ childrenGap: 20 }}>
+                {toggle == 0 ?
+                    <>
+                        <Stack horizontal tokens={{ childrenGap: 30 }}>
+                            <Stack tokens={commonInfoStackTokens}>
+                                {basicLogsData.map((data, index) => {
+                                    return result(data, index);
+                                })}
+                            </Stack>
+                            <Stack tokens={commonInfoStackTokens}>
+                                {basicLogsStatus.map((data, index) => {
+                                    return result(data, index);
+                                })
+                                }
+                            </Stack>
+                        </Stack>
 
-                <Stack styles={{ root: { border: '2px solid #797775', paddingLeft: 10, paddingRight: 10, paddingTop: 5 } }}>
-                    <Pivot linkSize={PivotLinkSize.large}>
-                        <PivotItem headerText="Overview">
-                            <Label>
-                                <Stack tokens={commonInfoStackTokens}>
-                                    {overviewData.map((data) => {
-                                        return (
-                                            <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
+                        <Stack horizontal tokens={{ childrenGap: 10 }}>
+                            <PrimaryButton text="Report to Calendar API Shield" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
+                            <PrimaryButton text="Create a Workitem" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
+                            <PrimaryButton text="Update a Workitem" styles={{ root: { width: 'auto', backgroundColor: 'rgb(0, 120, 212)', borderRadius: '7px', fontSize: '16px', border: 'none', height: 35, lineHeight: 35 } }} />
+                        </Stack>
+                    </>
+                    :
+                    <Stack styles={{ root: { border: '2px solid #797775', paddingLeft: 10, paddingRight: 10, paddingTop: 5 } }}>
+                        <Pivot linkSize={PivotLinkSize.large}>
+                            <PivotItem headerText="Overview">
+                                <Label>
+                                    <Stack tokens={commonInfoStackTokens}>
+                                        {overviewData.map((data) => {
+                                            return (
+                                                <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
+                                                    <span className={infoStackItemStylesLabel}> {data.name} </span>
+                                                    <span className={infoStackItemStyles}>  {data.value}  </span>
+                                                </Stack>
+                                            )
+                                        })}
+                                    </Stack>
+                                </Label>
+                            </PivotItem>
+                            <PivotItem headerText="Graph">
+                                <Label>
+                                    <Stack tokens={commonInfoStackTokens}>
+                                        {graphData.map((data) => {
+                                            return (<Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
                                                 <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                                <span className={infoStackItemStyles}>  {data.value}  </span>
-                                            </Stack>
-                                        )
-                                    })}
-                                </Stack>
-                            </Label>
-                        </PivotItem>
-                        <PivotItem headerText="Graph">
-                            <Label>
-                                <Stack tokens={commonInfoStackTokens}>
-                                    {graphData.map((data) => {
-                                        return (<Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
-                                            <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                            <span className={infoStackItemStyles}>  {data.value}  </span>
-                                        </Stack>)
-                                    })}
-                                </Stack>
-                            </Label>
-                        </PivotItem>
+                                                <span className={infoStackItemStyles}> {data.value}  </span>
+                                            </Stack>)
+                                        })}
+                                    </Stack>
+                                </Label>
+                            </PivotItem>
 
-                        <PivotItem headerText="REST">
-                            <Label>
-                                <Stack tokens={commonInfoStackTokens}>
-                                    {restData.map((data) => {
-                                        return (
-                                            <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
-                                                <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                                <span className={infoStackItemStyles}>  {data.value}  </span>
-                                            </Stack>
-                                        )
-                                    })}
-                                </Stack>
-                            </Label>
-                        </PivotItem>
-                    </Pivot>
-                </Stack>
+                            <PivotItem headerText="REST">
+                                <Label>
+                                    <Stack tokens={commonInfoStackTokens}>
+                                        {restData.map((data) => {
+                                            return (
+                                                <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
+                                                    <span className={infoStackItemStylesLabel}> {data.name} </span>
+                                                    <span className={infoStackItemStyles}>  {data.value}  </span>
+                                                </Stack>
+                                            )
+                                        })}
+                                    </Stack>
+                                </Label>
+                            </PivotItem>
+                        </Pivot>
+                    </Stack>
+                }
             </Stack>
         </div>
     )

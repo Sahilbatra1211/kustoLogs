@@ -5,7 +5,7 @@ import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
 import { Stack, IStackTokens } from 'office-ui-fabric-react/lib/Stack';
 import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import { DefaultPalette } from 'office-ui-fabric-react/lib/Styling';
-import { IStackStyles } from '@fluentui/react';
+import { IStackStyles } from 'office-ui-fabric-react/lib/Stack';
 
 const verticalGapStackTokens: IStackTokens = {
   childrenGap: 11,  

@@ -15,7 +15,6 @@ const verticalGapStackTokens2: IStackTokens = {
 
 const stackItemStyles: IStackItemStyles = {
   root: {
-    marginTop:'40px',
     marginRight:'20px',
   },
 };
