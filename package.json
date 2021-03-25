@@ -74,7 +74,9 @@
   "dependencies": {
     "@fluentui/react": "^8.6.0",
     "@fluentui/react-theme-provider": "^0.18.5",
+    "moment": "^2.29.1",
     "office-ui-fabric-react": "^7.149.4",
+    "react-datetime": "^3.0.4",
     "read-more-react": "^1.0.10"
   }
 }

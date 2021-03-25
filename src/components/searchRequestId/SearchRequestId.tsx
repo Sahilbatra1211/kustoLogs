@@ -1,4 +1,5 @@
-import * as React from 'react'
+import * as React from 'react';
+import {useState} from 'react';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
@@ -6,6 +7,9 @@ import { Stack, IStackTokens } from 'office-ui-fabric-react/lib/Stack';
 import { DefaultButton, PrimaryButton } from 'office-ui-fabric-react';
 import { DefaultPalette } from 'office-ui-fabric-react/lib/Styling';
 import { IStackStyles } from 'office-ui-fabric-react/lib/Stack';
+import Datetime  from 'react-datetime';
+import "react-datetime/css/react-datetime.css";
+import "./SearchRequest.css";
 
 const verticalGapStackTokens: IStackTokens = {
   childrenGap: 11,  
@@ -23,13 +27,11 @@ const verticalGapStackTokens1: IStackTokens = {
   childrenGap: 4
 };
 
-const options: IDropdownOption[] = [
-  { key: 'm', text: 'Minutes' },
-  { key: 'h', text: 'Hours' },
-  { key: 'd', text: 'Days' },
-];
+ 
 
 export default function SearchRequestId(props) {
+  
+ 
   return (
       <Stack styles={stackStyles}>
       <Stack tokens={verticalGapStackTokens}>
@@ -65,29 +67,18 @@ export default function SearchRequestId(props) {
         </Stack>
         <Stack tokens={verticalGapStackTokens1}>
           <Text variant="smallPlus" nowrap block styles={{ root: { fontWeight: 600 } }}>
-            User Agent
-          </Text>
-          <TextField placeholder="Enter a request or correlation id" styles={{ root: { width: 300 } }} onChange={props.onChangeReqIDFieldValue} />
-        </Stack>
-        <Stack tokens={verticalGapStackTokens1}>
-          <Text variant="smallPlus" nowrap block styles={{ root: { fontWeight: 600 } }}>
-            Scenerio Tag
-          </Text>
-          <TextField placeholder="Enter a request or correlation id" styles={{ root: { width: 300 } }} onChange={props.onChangeReqIDFieldValue} />
-        </Stack>
-        <Stack tokens={verticalGapStackTokens1}>
-          <Text variant="smallPlus" nowrap block styles={{ root: { fontWeight: 600 } }}>
-            Operation Name
-          </Text>
-          <TextField placeholder="Enter a request or correlation id" styles={{ root: { width: 300 } }} onChange={props.onChangeReqIDFieldValue} />
-        </Stack>
-        <Stack tokens={verticalGapStackTokens1}>
-          <Text variant="smallPlus" nowrap block styles={{ root: { fontWeight: 600 } }}>
-            Time range
+            Start Time
         </Text>
           <Stack horizontal styles={{root:{marginBottom:'10px'}}}>
-            <DefaultButton text="Now" styles={{ root: { width: 40, minWidth: 40 } }} />
-            <TextField value="11/04/2020 14:07" styles={{ root: { width: 260, marginRight: 15 } }} />
+            <Datetime dateFormat={"yyyy-MM-DD"} timeFormat={"TH:MM"} onChange={props.onChangeStartDateTime} initialValue={new Date()} className="dateTimeStyle"/>
+          </Stack>
+        </Stack>
+        <Stack tokens={verticalGapStackTokens1}>
+          <Text variant="smallPlus" nowrap block styles={{ root: { fontWeight: 600 } }}>
+            End Time
+        </Text>
+          <Stack horizontal styles={{root:{marginBottom:'10px'}}}>
+            <Datetime dateFormat={"yyyy-MM-DD"} timeFormat={"TH:MM"} onChange={props.onChangeEndDateTime} initialValue={new Date()} className="dateTimeStyle"/>
           </Stack>
         </Stack>
 

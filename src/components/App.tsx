@@ -23,6 +23,8 @@ const VerticalStackBasicExample: React.FunctionComponent = () => {
 
   const [resultsFetched, setResultsFetched] = useState(false);
   const [logData, setLogData] = useState(resultsData);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const [reqIDFieldValue, setReqIDFieldValue] = React.useState('');
 
@@ -33,6 +35,13 @@ const VerticalStackBasicExample: React.FunctionComponent = () => {
     [],
   );
 
+  const onChangeStartDateTime=(date)=>{
+    setStartTime(date);
+  }
+
+  const onChangeEndDateTime=(date)=>{
+    setEndTime(date);
+  }
 
   function _onClick() {
 
@@ -66,7 +75,7 @@ const VerticalStackBasicExample: React.FunctionComponent = () => {
     <Navbar/>
     <Stack horizontal styles={{root:{height: '92.5%'}}} tokens={verticalGapStackTokens2}>
       <Stack.Item grow={1} styles={{root:{backgroundColor:'#faf9f8',height:'100%'}}}>
-      <SearchRequestId onClick={_onClick} onChangeReqIDFieldValue={onChangeReqIDFieldValue} />
+      <SearchRequestId onClick={_onClick} onChangeReqIDFieldValue={onChangeReqIDFieldValue} onChangeStartDateTime={onChangeStartDateTime} onChangeEndDateTime={onChangeEndDateTime} />
       </Stack.Item>
       <Stack.Item grow={20} styles={stackItemStyles}>
       {resultsFetched && (<LogData logData={logData} />)}

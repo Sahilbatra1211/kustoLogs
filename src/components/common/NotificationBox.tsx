@@ -15,7 +15,8 @@ const navStackStyles: IStackStyles = {
         justifyContent:'center',
         fontSize:'18px',
         paddingLeft:'10px',
-        fontWeight:'500'
+        fontWeight:'500',
+        marginBottom:'10px'
     }
 }
 
