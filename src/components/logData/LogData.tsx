@@ -8,6 +8,7 @@ import '../../assets/scss/App.scss';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import { useState } from 'react';
 import ReadMore from '../common/ReadMore';
+import NotificationBox from '../common/NotificationBox';
 
 
 const commonInfoStackTokens: IStackTokens = {
@@ -145,6 +146,7 @@ export default function LogData(props) {
             </Stack>
 
             <Stack id="results-data" style={{ marginLeft: '40px', marginTop: '20px', marginRight: '40px' }} tokens={{ childrenGap: 20 }}>
+                <NotificationBox text="Request Failed" request="failiure"/>
                 {toggle == 0 ?
                     <>
                         <Stack horizontal tokens={{ childrenGap: 30 }}>
