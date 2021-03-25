@@ -7,7 +7,7 @@ import { Label } from 'office-ui-fabric-react/lib/Label';
 import '../../assets/scss/App.scss';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import { useState } from 'react';
-import ReadMoreReact from 'read-more-react';
+import ReadMore from '../common/ReadMore';
 
 
 const commonInfoStackTokens: IStackTokens = {
@@ -140,8 +140,8 @@ export default function LogData(props) {
     return (
         <div>
             <Stack horizontal>
-                <Stack onClick={() => { setToggle(0) }} style={{ borderBottom: `5px solid ${toggleColorBasic}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans' } }}>Basic</Text></Stack>
-                <Stack onClick={() => { setToggle(1) }} style={{ borderBottom: `5px solid ${toggleColorDetailed}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans' } }}>Detailed</Text></Stack>
+                <Stack onClick={() => { setToggle(0) }} style={{ borderBottom: `5px solid ${toggleColorBasic}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans',fontWeight:'600' } }}>Basic</Text></Stack>
+                <Stack onClick={() => { setToggle(1) }} style={{ borderBottom: `5px solid ${toggleColorDetailed}` }} styles={navStackStyles}><Text variant="large" styles={{ root: { marginRight: '60px', fontFamily: 'Noto Sans',fontWeight:'600' } }}>Detailed</Text></Stack>
             </Stack>
 
             <Stack id="results-data" style={{ marginLeft: '40px', marginTop: '20px', marginRight: '40px' }} tokens={{ childrenGap: 20 }}>
@@ -177,7 +177,7 @@ export default function LogData(props) {
                                             return (
                                                 <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
                                                     <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                                    <span className={infoStackItemStyles}>  {data.value}  </span>
+                                                    <span className={infoStackItemStyles}> <ReadMore completeText={data.value} length={310}/>  </span>
                                                 </Stack>
                                             )
                                         })}
@@ -190,7 +190,7 @@ export default function LogData(props) {
                                         {graphData.map((data) => {
                                             return (<Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
                                                 <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                                <span className={infoStackItemStyles}> {data.value}  </span>
+                                                <span className={infoStackItemStyles}> <ReadMore completeText={data.value} length={310}/>  </span>
                                             </Stack>)
                                         })}
                                     </Stack>
@@ -204,7 +204,7 @@ export default function LogData(props) {
                                             return (
                                                 <Stack horizontal styles={commonInfoStackStyles} tokens={commonInfoStackTokens}>
                                                     <span className={infoStackItemStylesLabel}> {data.name} </span>
-                                                    <span className={infoStackItemStyles}>  {data.value}  </span>
+                                                    <span className={infoStackItemStyles}> <ReadMore completeText={data.value} length={310}/> </span>
                                                 </Stack>
                                             )
                                         })}
