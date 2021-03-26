@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { hot } from "react-hot-loader";
 import { Stack, IStackItemStyles, IStackTokens } from 'office-ui-fabric-react/lib/Stack';
 import SearchRequestId from './searchRequestId/SearchRequestId';
@@ -8,7 +8,8 @@ import { resultsData } from '../mockData/mockData'
 import LogData from './logData/LogData';
 import Navbar from './nav/Navbar';
 import moment from 'moment';
-
+import {config} from '../Config'
+import {PublicClientApplication} from '@azure/msal-browser';
 
 const verticalGapStackTokens2: IStackTokens = {
   childrenGap: 40
@@ -26,8 +27,51 @@ const VerticalStackBasicExample: React.FunctionComponent = () => {
   const [logData, setLogData] = useState(resultsData);
   const [startTime, setStartTime] = useState(moment().format());
   const [endTime, setEndTime] = useState(moment().format());
-
   const [reqIDFieldValue, setReqIDFieldValue] = React.useState('');
+  const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user,setUser] = useState({});
+  const [username, setUsername]= useState("");
+
+  var publicClientApplication;
+  useEffect(() => {
+   
+     publicClientApplication = new PublicClientApplication({
+      auth: {
+        clientId: config.appId,
+        redirectUri: config.redirectUri,
+        authority: config.authority
+      },
+      cache: {
+        cacheLocation: "sessionStorage",
+        storeAuthStateInCookie: true
+      },
+    });
+    
+  }, [])
+
+  async function login() {
+    try {
+      // Login via popup  
+      publicClientApplication.loginPopup(
+        {
+          scopes: config.scopes,
+          prompt: "select_account"
+        }).then((res)=>{
+          console.log(res);
+          setIsAuthenticated(true);
+          setUsername(res.idTokenClaims.name);
+        });
+      
+
+    }
+    catch (err) {
+
+      setIsAuthenticated(false);
+      setError(err);
+    }
+  }
+  
   const onChangeReqIDFieldValue = React.useCallback(
     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
       setReqIDFieldValue(newValue || '');
@@ -74,7 +118,7 @@ const VerticalStackBasicExample: React.FunctionComponent = () => {
 
   return (
     <>
-    <Navbar/>
+    <Navbar isAuthenticated={isAuthenticated} onLogin={login} username={username}/>
     <Stack horizontal styles={{root:{height: '92.5%'}}} tokens={verticalGapStackTokens2}>
       <Stack.Item grow={1} styles={{root:{backgroundColor:'#faf9f8',height:'100%'}}}>
       <SearchRequestId onClick={_onClick} onChangeReqIDFieldValue={onChangeReqIDFieldValue} onChangeStartDateTime={onChangeStartDateTime} onChangeEndDateTime={onChangeEndDateTime} />

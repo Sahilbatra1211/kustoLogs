@@ -49,7 +49,7 @@ const stackStyles3: IStackStyles = {
   }
 }
 
-export default function Navbar(){
+export default function Navbar(props){
   return (
     <Stack horizontal styles={stackStyles} tokens={stackTokens}>
       <Stack.Item grow={3} styles={stackItemStyles}>
@@ -62,7 +62,8 @@ export default function Navbar(){
           <Text variant='mediumPlus' styles={{root:{marginRight:'60px',fontFamily:'Noto Sans'}}}>Throttle Info</Text>
           <Text variant='mediumPlus' styles={{root:{marginRight:'60px'}}}>Lateral Escalation</Text>
           <Text variant='mediumPlus' styles={{root:{marginRight:'60px'}}}>Version 0.0.2</Text>
-          <Text variant='mediumPlus' styles={{root:{marginRight:'20px'}}}>Sign In</Text>
+          {props.isAuthenticated==true?<Text variant='mediumPlus' styles={{root:{marginRight:'20px',cursor:'pointer'}}}>Sign Out</Text>:
+          <Text onClick={()=>{props.onLogin()}} variant='mediumPlus' styles={{root:{marginRight:'20px',cursor:'pointer'}}}>Sign In</Text>}
           <Text></Text>
         </Stack>
       </Stack.Item>
